@@ -633,12 +633,12 @@ server <- function(input, output, session) {
     if (is.null(input_reactive$context_vars)) {
       NULL
     } else {
-      a <- cbind(a, eda_input[, (input_reactive$context_vars)])
+      a <- cbind(a, eda_input[, (input_reactive$context_vars),drop = FALSE]) #FIX
     }
     if (is.null(input_reactive$organic_vars)) {
       NULL
     } else {
-      a <- cbind(a, eda_input[, (input_reactive$organic_vars)])
+      a <- cbind(a, eda_input[, (input_reactive$organic_vars),drop = FALSE]) #FIX
     }
 
     dt_pw_corr <- a
@@ -722,7 +722,7 @@ server <- function(input, output, session) {
     ##################################################################################
 
     # aggregate data to yearly sales by channel:
-    eda_input_media_spend_vars <- eda_input[which(colnames(eda_input) %in% c("DATE", input_reactive$paid_media_spends)), ]
+    eda_input_media_spend_vars <- eda_input[,which(colnames(eda_input) %in% c("DATE", input_reactive$paid_media_spends))] #FIX
     eda_input_media_spend_vars$year <- year(eda_input_media_spend_vars$DATE)
     yearly_media_spend <- eda_input_media_spend_vars %>%
       select(colnames(subset(eda_input_media_spend_vars, select = -c(get("DATE"))))) %>%
